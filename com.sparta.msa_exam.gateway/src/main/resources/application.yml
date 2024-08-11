@@ -1,0 +1,36 @@
+
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/products/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+      discovery:
+        locator:
+          enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
+server:
+  port: 19091
+
+service:
+  jwt:
+    secret-key: c6f053684d0524f20361aa3d8a4ea2e6029fd0eccb6105998d96d539612ccbb556e982986c359f6b77e7d52fc74d59ca84fc272da5a1cefd1e09c59e4b5deb19
+    expiredMs: 7200000
